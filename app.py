@@ -360,6 +360,7 @@ TEACHERS = [
     "M. Murray",
     "A. Pressend",
     "C. September",
+    "D. Sievers",
     "N. Smuts",
     "S. St. Jerry",
     "S. Van Schalkwyk",
