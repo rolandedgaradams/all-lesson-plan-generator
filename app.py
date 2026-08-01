@@ -19,11 +19,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Responsive & Modern Guided CSS Framework + Web App Manifest Link
+# Responsive & Modern Guided CSS Framework
 st.markdown("""
-    <head>
-        <link rel="manifest" href="/app/static/manifest.json">
-    </head>
     <style>
     /* Global Page Styling */
     .stApp {
@@ -59,9 +56,13 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .header-badge-img {
-        width: 65px;
-        height: auto;
+        width: auto !important;
+        max-width: 60px !important;
+        height: 55px !important;
+        max-height: 55px !important;
+        object-fit: contain !important;
         border-radius: 4px;
+        flex-shrink: 0 !important;
     }
     .header-text-container h1 {
         color: #ffffff !important;
