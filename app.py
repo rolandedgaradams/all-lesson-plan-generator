@@ -19,8 +19,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Responsive & Modern Guided CSS Framework
+# Responsive & Modern Guided CSS Framework + Web App Manifest Link
 st.markdown("""
+    <head>
+        <link rel="manifest" href="/app/static/manifest.json">
+    </head>
     <style>
     /* Global Page Styling */
     .stApp {
@@ -360,7 +363,6 @@ TEACHERS = [
     "M. Murray",
     "A. Pressend",
     "C. September",
-    "D. Sievers",
     "N. Smuts",
     "S. St. Jerry",
     "S. Van Schalkwyk",
