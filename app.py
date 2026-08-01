@@ -241,6 +241,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
+# Dynamic HOD Logic
+# ---------------------------------------------------------
+def get_hod_name(subject_name):
+    technical_keywords = [
+        "woodwork", "woodworking", "welding", "upholstery", "maintenance", 
+        "hairdressing", "hospitality", "office admin", "ict"
+    ]
+    clean_subj = str(subject_name).strip().lower()
+    if any(tech in clean_subj for tech in technical_keywords):
+        return "S. Van Schalkwyk"
+    return "B. Koenze"
+
+# ---------------------------------------------------------
 # Subject Registry & File Mapping
 # ---------------------------------------------------------
 SUBJECTS_CONFIG = {
@@ -324,7 +337,7 @@ SUBJECTS_CONFIG = {
         "icon": "💻",
         "prompt_hint": "Focus on computer literacy, software applications, keyboarding, internet safety, digital communication, and basic hardware troubleshooting."
     },
-"Maintenance": {
+    "Maintenance": {
         "pdf": "curriculums/maintenance.pdf",
         "icon": "🛠️",
         "prompt_hint": "Focus on general building maintenance, basic plumbing, electrical safety, painting, tool repair, and facility upkeep."
@@ -647,6 +660,9 @@ with col_subj:
 with col_teach:
     teacher_name = st.selectbox("Teacher Name", TEACHERS, key="step1_teacher")
 
+# Dynamic HOD Assignment
+hod_name = get_hod_name(selected_subject)
+
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
@@ -751,7 +767,7 @@ st.markdown("""
         </div>
 """, unsafe_allow_html=True)
 
-# Dynamic Summary Box
+# Dynamic Summary Box (Includes HOD Display)
 st.markdown(f"""
     <div class="summary-box">
         <div class="summary-grid">
@@ -762,6 +778,10 @@ st.markdown(f"""
             <div class="summary-item">
                 <span class="summary-label">Teacher</span>
                 <span class="summary-value">{teacher_name}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Assigned HOD</span>
+                <span class="summary-value">{hod_name}</span>
             </div>
             <div class="summary-item">
                 <span class="summary-label">Year Level</span>
@@ -799,6 +819,8 @@ if st.button(btn_label, disabled=not all_resources_ready):
             context = extracted.model_dump()
             context.update({
                 "teacher_name": teacher_name,
+                "hod": hod_name,
+                "hod_name": hod_name,
                 "year": str(year),
                 "term": str(term),
                 "week": str(week_input),
@@ -816,7 +838,7 @@ if st.button(btn_label, disabled=not all_resources_ready):
             
             st.session_state["generated_docx"] = buffer
             st.session_state["generated_filename"] = f"{selected_subject.replace(' ', '_')}_Lesson_Plan_Year{year}_Term{term}_Week{week_input}.docx"
-            st.session_state["gen_details"] = {"subj": selected_subject, "yr": year, "trm": term, "wk": week_input}
+            st.session_state["gen_details"] = {"subj": selected_subject, "yr": year, "trm": term, "wk": week_input, "hod": hod_name}
 
         except Exception as e:
             st.error(f"Error generating document: {e}")
@@ -828,7 +850,7 @@ if "generated_docx" in st.session_state and st.session_state["generated_docx"] i
         <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-left: 5px solid #16a34a; padding: 20px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px;">
             <h4 style="color: #166534; margin: 0 0 8px 0;">✓ Lesson Plan Generated Successfully</h4>
             <p style="color: #15803d; margin: 0 0 0 0; font-size: 0.95rem;">
-                Your <b>{det['subj']}</b> lesson plan for <b>Year {det['yr']}, Term {det['trm']}, Week {det['wk']}</b> is ready for download.
+                Your <b>{det['subj']}</b> lesson plan for <b>Year {det['yr']}, Term {det['trm']}, Week {det['wk']}</b> (HOD: <b>{det['hod']}</b>) is ready for download.
             </p>
         </div>
     """, unsafe_allow_html=True)
